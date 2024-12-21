@@ -1,4 +1,4 @@
-### The goal of this project
+# The goal of this project
 - learn Django in more detail, to better understand the project I am leading
 - practice more writing code every single day myself again
 - implement a basic sqlite database and a couple api endpoints
