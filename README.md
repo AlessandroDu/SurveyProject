@@ -14,8 +14,8 @@
 - fill our form and submit it
 - view form submissions
 ## API endpoints
-- /forms  POST, GET
-- /forms/pk  GET, PUT/PATCH
+- /surveys  POST, GET
+- /surveys/pk  GET, PUT/PATCH
 - /submitLink/id  GET
 - /submit  POST
 - /submissions  GET
