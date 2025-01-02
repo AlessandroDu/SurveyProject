@@ -1,0 +1,68 @@
+{% extends 'surveysApp/base_generic.html' %}
+
+{% block content %}
+<h1>Create Survey</h1>
+<form method="POST">
+  {% csrf_token %}
+  <label for="survey_title">Survey Title:</label>
+  <input type="text" name="survey_title" required><br>
+
+  <label for="survey_description">Description:</label>
+  <textarea name="survey_description"></textarea><br>
+
+  <div id="questions">
+    <!-- Dynamically add question fields here -->
+  </div>
+  <button type="button" onclick="addQuestion()">Add Question</button><br>
+
+  <input type="hidden" name="question_count" id="question_count" value="0">
+  <button type="submit">Save Survey</button>
+</form>
+
+<script>
+  let questionCount = 0;
+
+  function addQuestion() {
+    const questionsDiv = document.getElementById("questions");
+    const questionHtml = `
+      <div id="question_${questionCount}">
+        <label>Question:</label>
+        <input type="text" name="question_text_${questionCount}" required><br>
+        <label>Type:</label>
+        <select name="question_type_${questionCount}" onchange="handleTypeChange(${questionCount}, this)" required>
+          <option value="open">Open</option>
+          <option value="multiple_choice">Multiple Choice</option>
+        </select><br>
+        <div id="options_${questionCount}"></div>
+      </div>
+    `;
+    questionsDiv.innerHTML += questionHtml;
+    questionCount++;
+    document.getElementById("question_count").value = questionCount;
+  }
+
+  function handleTypeChange(index, select) {
+    const optionsDiv = document.getElementById(`options_${index}`);
+    if (select.value === "multiple_choice") {
+      optionsDiv.innerHTML = `
+        <button type="button" onclick="addOption(${index})">Add Option</button>
+        <input type="hidden" name="option_count_${index}" id="option_count_${index}" value="0">
+      `;
+    } else {
+      optionsDiv.innerHTML = "";
+    }
+  }
+
+  function addOption(index) {
+    const optionsDiv = document.getElementById(`options_${index}`);
+    const optionCountInput = document.getElementById(`option_count_${index}`);
+    const optionCount = parseInt(optionCountInput.value);
+    optionsDiv.innerHTML += `
+      <div>
+        <input type="text" name="option_text_${index}_${optionCount}" required>
+      </div>
+    `;
+    optionCountInput.value = optionCount + 1;
+  }
+</script>
+{% endblock %}

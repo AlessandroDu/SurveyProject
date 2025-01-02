@@ -1,0 +1,42 @@
+{% extends 'surveysApp/base_generic.html' %}
+
+{% block content %}
+  <h1>Survey Submissions for: {{ survey.title }}</h1>
+  <p>{{ survey.description }}</p>
+  
+  <h2>Submissions</h2>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Submission ID</th>
+        <th>Respondent</th>
+        <th>Answers</th>
+        <th>Date Submitted</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for submission in submissions %}
+        <tr>
+          <td>{{ submission.id }}</td>
+          <td>{{ submission.user.email }}</td>
+          <td>
+            <ul>
+              {% for answer in submission.answers.all %}
+                <li><strong>{{ answer.question.question }}:</strong> 
+                    {% if answer.is_multiple_choice %}
+                        {{ answer.selected_option.optionText }}
+                    {% else %}
+                        {{ answer.text }}
+                    {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </td>
+          <td>{{ submission.created_at }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+{% endblock %}

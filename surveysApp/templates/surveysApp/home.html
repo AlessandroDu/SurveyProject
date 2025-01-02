@@ -1,1 +1,14 @@
-<h1>You are home.</h1>
+{% extends 'surveysApp/base_generic.html' %}
+
+{% block content %}
+<h1>Surveys</h1>
+<ul>
+  {% for survey in surveys %}
+    <li>
+      {{ survey.title }} - <a href="{% url 'submit_survey' survey.id %}">Take Survey</a> - 
+      <a href="{% url 'view_submissions' survey.id %}">View Submissions</a>
+    </li>
+  {% endfor %}
+</ul>
+<a href="{% url 'create_survey' %}">Create New Survey</a>
+{% endblock %}
